@@ -1,6 +1,7 @@
 import { useState, useEffect, type FormEvent, type ReactNode } from "react"
-import banLogo from "@/imports/image.png"
-import heroDiagram from "@/imports/diagram-hero.webp"
+import banLogo from "@/imports/ban_logo.png"
+import carelonLogo from "@/imports/carelon-logo.png"
+import acqLogo from "@/imports/acq-logo.png"
 
 const ROYAL_BLUE = "#1946DA"
 const BLUE_DEEP = "#12329B"
@@ -146,16 +147,16 @@ function Header() {
         boxShadow: scrolled ? "0 6px 24px -12px rgba(16,24,40,0.18)" : "none",
       }}
     >
-      <div className="mx-auto max-w-[1180px] px-6 h-full flex items-center justify-between gap-6">
+      <div className="w-full px-6 md:px-10 lg:px-14 h-full flex items-center gap-6">
         <a
           href="#top"
-          className="flex items-center shrink-0"
+          className="flex flex-1 items-center shrink-0"
           aria-label="Behavior Analyst Network — home"
         >
-          <img src={banLogo} alt="Behavior Analyst Network" className="h-8 w-auto object-contain" />
+          <img src={banLogo} alt="Behavior Analyst Network" className="h-11 w-auto object-contain" />
         </a>
 
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex flex-1 items-center justify-center gap-2">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.id
             return (
@@ -179,7 +180,7 @@ function Header() {
           })}
         </nav>
 
-        <div className="hidden md:flex items-center gap-5 shrink-0">
+        <div className="hidden md:flex flex-1 items-center justify-end gap-6 shrink-0">
           <a
             href="mailto:info@behavioranalystnetwork.com"
             className="text-sm font-semibold transition-colors hover:text-[#1946DA]"
@@ -283,39 +284,6 @@ function StickyMobileCTA() {
       <PrimaryButton href="#apply" size="lg" block>
         Apply to Join BAN
       </PrimaryButton>
-    </div>
-  )
-}
-
-function PracticeIllustration() {
-  return (
-    <div className="relative select-none h-full">
-      <div
-        className="absolute -inset-8 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          background: `radial-gradient(55% 55% at 50% 45%, ${ROYAL_BLUE}22 0%, transparent 72%)`,
-        }}
-      />
-      <figure
-        className="relative overflow-hidden rounded-[24px] m-0 h-full"
-        style={{
-          background: NAVY,
-          border: "1px solid rgba(152,235,244,0.18)",
-          boxShadow: "0 28px 64px -24px rgba(25,70,218,0.45)",
-        }}
-      >
-        <img
-          src={heroDiagram}
-          width={1200}
-          height={1200}
-          loading="eager"
-          decoding="async"
-          alt="The BAN Practice Partner sits at the center of qualified client opportunities, clinical and operational support, and BT workforce support — clinician-led, accredited, and AI-powered."
-
-          className="block w-full h-full object-contain"
-        />
-      </figure>
     </div>
   )
 }
@@ -1311,34 +1279,6 @@ function HowItWorks() {
           </p>
         </div>
 
-        <div
-          className="grid lg:grid-cols-[1fr_480px] gap-10 lg:gap-16 items-stretch mb-16 md:mb-20 pb-16 md:pb-20 border-b"
-          style={{ borderColor: BORDER }}
-        >
-          <div className="flex flex-col justify-center">
-            <p
-              className="text-lg leading-relaxed mb-4"
-              style={{ color: SECONDARY_TEXT, maxWidth: "54ch" }}
-            >
-              BAN gives experienced BCBAs the autonomy and financial upside of practice leadership
-              without the burden of forming a company, building a back office, finding every client,
-              or employing a BT workforce on their own.
-            </p>
-            <p
-              className="text-lg leading-relaxed"
-              style={{ color: SECONDARY_TEXT, maxWidth: "54ch" }}
-            >
-              We bring the accredited operating platform, qualified client opportunities, BT
-              workforce support, ongoing clinical and operational guidance, and AI-powered systems.{" "}
-              <strong style={{ color: INK }}>You lead the care, the team, and the culture.</strong>
-            </p>
-          </div>
-
-          <div className="lg:justify-self-end w-full max-w-[520px] mx-auto lg:mx-0 lg:h-full">
-            <PracticeIllustration />
-          </div>
-        </div>
-
         <div className="hidden md:grid grid-cols-4 gap-6 relative">
           <div
             className="absolute top-[52px] left-[12.5%] right-[12.5%] h-px"
@@ -2082,7 +2022,29 @@ function Footer() {
     <footer className="py-12 border-t" style={{ background: "white", borderColor: BORDER }}>
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
-          <img src={banLogo} alt="Behavior Analyst Network" className="h-9 w-auto object-contain" />
+          <img src={banLogo} alt="Behavior Analyst Network" className="h-12 w-auto object-contain" />
+
+          <div className="flex flex-col gap-2">
+            <span
+              className="text-xs font-semibold uppercase tracking-wide"
+              style={{ color: SECONDARY_TEXT }}
+            >
+              Supported by:
+            </span>
+            <div className="flex items-center gap-6">
+              <img
+                src={carelonLogo}
+                alt="Carelon Provider Excellence Program"
+                className="h-16 w-auto object-contain"
+              />
+              <img
+                src={acqLogo}
+                alt="ACQ Accredited Healthcare"
+                className="h-16 w-auto object-contain"
+              />
+            </div>
+          </div>
+
           <div className="flex flex-wrap items-center gap-5">
             {[
               { label: "Privacy Policy", href: "#" },
