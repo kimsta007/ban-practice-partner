@@ -287,7 +287,7 @@ function StickyMobileCTA() {
   )
 }
 
-function HeroGraphic() {
+function PracticeIllustration() {
   return (
     <div className="relative select-none h-full">
       <div
@@ -348,86 +348,103 @@ function CyanCheck({ className = "" }: { className?: string }) {
 }
 
 function Hero() {
-  return (
-    <section className="pb-16 md:pb-24 bg-white" style={{ paddingTop: HEADER_H }}>
-      <div className="mx-auto max-w-[1180px] px-6 pt-10 md:pt-14 text-center">
-        <span
-          className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
-          style={{ background: "white", color: ROYAL_BLUE, border: `1px solid ${BORDER}` }}
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-            className="flex-shrink-0"
-          >
-            <circle cx="8" cy="8" r="7" stroke={ROYAL_BLUE} strokeWidth="1.5" />
-            <path d="M8 7.25v4" stroke={ROYAL_BLUE} strokeWidth="1.6" strokeLinecap="round" />
-            <circle cx="8" cy="4.9" r="0.9" fill={ROYAL_BLUE} />
-          </svg>
-          Now Enrolling Founding Practice Partners in Massachusetts
-        </span>
-      </div>
+  const [reduceMotion, setReduceMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  )
 
-      <div className="mx-auto max-w-[1180px] px-6 pt-6 md:pt-8">
-        <div className="grid lg:grid-cols-[1fr_480px] gap-10 lg:gap-16 items-stretch">
-          <div>
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const handler = () => setReduceMotion(mql.matches)
+    mql.addEventListener("change", handler)
+    return () => mql.removeEventListener("change", handler)
+  }, [])
+
+  return (
+    <>
+      <section
+        className="relative overflow-hidden"
+        style={{ marginTop: HEADER_H, minHeight: "calc(100vh - " + HEADER_H + "px)" }}
+      >
+        <div
+          className="absolute inset-0 z-0"
+          aria-hidden="true"
+          style={{ background: `linear-gradient(160deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}
+        />
+        <video
+          className="absolute inset-0 z-[1] w-full h-full object-cover"
+          src={`${import.meta.env.BASE_URL}videos/hero_slideshow.mp4`}
+          preload="auto"
+          autoPlay={!reduceMotion}
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 z-[2]"
+          aria-hidden="true"
+          style={{
+            background: `linear-gradient(180deg, ${NAVY_DEEP}CC 0%, ${NAVY}A6 45%, ${NAVY_DEEP}E0 100%)`,
+          }}
+        />
+
+        <div className="absolute inset-0 z-10 mx-auto max-w-[1180px] w-full px-6 py-14 md:py-20 flex flex-col items-center justify-between gap-12 text-center">
+          <div className="flex flex-col items-center">
             <h1
               className="font-bold mb-6"
               style={{
                 fontSize: "clamp(36px, 4.6vw, 58px)",
                 lineHeight: 1.08,
                 letterSpacing: "-0.01em",
-                color: INK,
+                color: "white",
                 fontFamily: "Montserrat, sans-serif",
                 maxWidth: "20ch",
               }}
             >
-              Lead a practice <span style={{ color: ROYAL_BLUE }}>without going it alone.</span>
+              Lead a practice <span style={{ color: LIGHT_AQUA }}>without going it alone.</span>
             </h1>
 
-            <p
-              className="text-lg leading-relaxed mb-4"
-              style={{ color: SECONDARY_TEXT, maxWidth: "54ch" }}
+            <span
+              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
+              style={{
+                background: "rgba(152,235,244,0.10)",
+                color: LIGHT_AQUA,
+                border: "1px solid rgba(152,235,244,0.28)",
+              }}
             >
-              BAN gives experienced BCBAs the autonomy and financial upside of practice leadership
-              without the burden of forming a company, building a back office, finding every client,
-              or employing a BT workforce on their own.
-            </p>
-            <p
-              className="text-lg leading-relaxed mb-8"
-              style={{ color: SECONDARY_TEXT, maxWidth: "54ch" }}
-            >
-              We bring the accredited operating platform, qualified client opportunities, BT
-              workforce support, ongoing clinical and operational guidance, and AI-powered systems.{" "}
-              <strong style={{ color: INK }}>You lead the care, the team, and the culture.</strong>
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <PrimaryButton href="#apply" size="lg">
-                Start Your Application
-              </PrimaryButton>
-              <a
-                href="#existing-practices"
-                className="inline-flex items-center justify-center px-7 rounded-[10px] text-base font-semibold text-center whitespace-nowrap border transition-colors hover:border-[#1946DA] hover:text-[#1946DA]"
-                style={{ color: SECONDARY_TEXT, borderColor: BORDER, minHeight: 52 }}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+                className="flex-shrink-0"
               >
-                Explore a Practice Transition
-              </a>
-            </div>
+                <circle cx="8" cy="8" r="7" stroke={LIGHT_AQUA} strokeWidth="1.5" />
+                <path d="M8 7.25v4" stroke={LIGHT_AQUA} strokeWidth="1.6" strokeLinecap="round" />
+                <circle cx="8" cy="4.9" r="0.9" fill={LIGHT_AQUA} />
+              </svg>
+              Now Enrolling Founding Practice Partners in Massachusetts
+            </span>
           </div>
 
-          <div className="lg:justify-self-end w-full max-w-[520px] mx-auto lg:mx-0 lg:h-full">
-            <HeroGraphic />
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <PrimaryButton href="#apply" size="lg">
+              Start Your Application
+            </PrimaryButton>
+            <a
+              href="#existing-practices"
+              className="inline-flex items-center justify-center px-7 rounded-[10px] text-base font-semibold text-center whitespace-nowrap border transition-colors hover:border-white hover:bg-white/10"
+              style={{ color: "white", borderColor: "rgba(255,255,255,0.35)", minHeight: 52 }}
+            >
+              Explore a Practice Transition
+            </a>
           </div>
         </div>
+      </section>
 
-        <ul
-          className="mt-12 md:mt-14 pt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-4 list-none p-0"
-          style={{ borderTop: `1px solid ${BORDER}` }}
-        >
+      <div className="bg-white py-10 md:py-12">
+        <ul className="mx-auto max-w-[1180px] px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-4 list-none p-0">
           {trustItems.map((item) => (
             <li key={item} className="flex items-center gap-2.5">
               <CyanCheck />
@@ -441,7 +458,7 @@ function Hero() {
           ))}
         </ul>
       </div>
-    </section>
+    </>
   )
 }
 
@@ -1292,6 +1309,34 @@ function HowItWorks() {
           <p className="text-lg" style={{ color: SECONDARY_TEXT }}>
             A straightforward path from your first conversation to leading a practice.
           </p>
+        </div>
+
+        <div
+          className="grid lg:grid-cols-[1fr_480px] gap-10 lg:gap-16 items-stretch mb-16 md:mb-20 pb-16 md:pb-20 border-b"
+          style={{ borderColor: BORDER }}
+        >
+          <div className="flex flex-col justify-center">
+            <p
+              className="text-lg leading-relaxed mb-4"
+              style={{ color: SECONDARY_TEXT, maxWidth: "54ch" }}
+            >
+              BAN gives experienced BCBAs the autonomy and financial upside of practice leadership
+              without the burden of forming a company, building a back office, finding every client,
+              or employing a BT workforce on their own.
+            </p>
+            <p
+              className="text-lg leading-relaxed"
+              style={{ color: SECONDARY_TEXT, maxWidth: "54ch" }}
+            >
+              We bring the accredited operating platform, qualified client opportunities, BT
+              workforce support, ongoing clinical and operational guidance, and AI-powered systems.{" "}
+              <strong style={{ color: INK }}>You lead the care, the team, and the culture.</strong>
+            </p>
+          </div>
+
+          <div className="lg:justify-self-end w-full max-w-[520px] mx-auto lg:mx-0 lg:h-full">
+            <PracticeIllustration />
+          </div>
         </div>
 
         <div className="hidden md:grid grid-cols-4 gap-6 relative">
