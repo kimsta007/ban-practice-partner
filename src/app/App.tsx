@@ -18,6 +18,11 @@ const BORDER = "#E2E8F3"
 const NAVY = "#001445"
 const NAVY_DEEP = "#00102F"
 
+const BANNER_BG = "#CBF3ED"
+const BANNER_ICON_CHIP = "rgba(4, 52, 44, 0.10)"
+const BANNER_TEXT_STRONG = "#04342C"
+const BANNER_TEXT_SOFT = "#085041"
+
 const BTN_SIZES = {
   sm: { height: 42, padding: "0 20px", fontSize: 14, icon: 14 },
   md: { height: 48, padding: "0 24px", fontSize: 14, icon: 15 },
@@ -705,13 +710,13 @@ function YouLead() {
 
         <div
           className="rounded-2xl px-8 py-7 flex flex-col sm:flex-row gap-5 items-start sm:items-center"
-          style={{ background: `linear-gradient(120deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}
+          style={{ background: BANNER_BG }}
         >
           <div
             className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
             style={{
-              background: "rgba(152,235,244,0.14)",
-              border: "1px solid rgba(152,235,244,0.28)",
+              background: BANNER_ICON_CHIP,
+              border: "1px solid rgba(4,52,44,0.20)",
             }}
           >
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -721,14 +726,19 @@ function YouLead() {
                 width="18"
                 height="12"
                 rx="2"
-                stroke={LIGHT_AQUA}
+                stroke={BANNER_TEXT_STRONG}
                 strokeWidth="1.6"
               />
-              <path d="M7 9h8M7 12h5" stroke={LIGHT_AQUA} strokeWidth="1.4" strokeLinecap="round" />
+              <path
+                d="M7 9h8M7 12h5"
+                stroke={BANNER_TEXT_STRONG}
+                strokeWidth="1.4"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
-          <p className="text-[15px] leading-relaxed" style={{ color: "#bcd8f5" }}>
-            <strong style={{ color: "white" }}>
+          <p className="text-[15px] leading-relaxed" style={{ color: BANNER_TEXT_SOFT }}>
+            <strong style={{ color: BANNER_TEXT_STRONG }}>
               BAN combines proven practice management infrastructure with AI-powered systems
             </strong>{" "}
             designed to reduce administrative friction across intake, scheduling, documentation,
@@ -2021,10 +2031,49 @@ function Footer() {
   return (
     <footer className="py-12 border-t" style={{ background: "white", borderColor: BORDER }}>
       <div className="mx-auto max-w-[1180px] px-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
-          <img src={banLogo} alt="Behavior Analyst Network" className="h-12 w-auto object-contain" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-10">
+          <div className="flex flex-col items-start">
+            <span
+              className="text-xs font-semibold uppercase tracking-wide"
+              style={{ color: SECONDARY_TEXT }}
+            >
+              Join our Team!
+            </span>
+            <div className="flex flex-col gap-2 mt-3">
+              {["BCBA", "Behavior Technician", "Develop Your Career"].map((label) => (
+                <a
+                  key={label}
+                  href="#apply"
+                  className="font-semibold hover:underline decoration-1 underline-offset-2"
+                  style={{ color: ROYAL_BLUE }}
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col items-start gap-2">
+            <span
+              className="text-xs font-semibold uppercase tracking-wide"
+              style={{ color: SECONDARY_TEXT }}
+            >
+              Contact Us
+            </span>
+            <a
+              href="mailto:info@behavioranalystnetwork.com"
+              className="hover:underline"
+              style={{ color: SECONDARY_TEXT }}
+            >
+              info@behavioranalystnetwork.com
+            </a>
+            <a href="tel:+16175550142" className="hover:underline" style={{ color: SECONDARY_TEXT }}>
+              (617) 555-0142
+            </a>
+            <span style={{ color: SECONDARY_TEXT }}>100 Federal Street, Boston, MA 02110</span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-x-3">
             <span
               className="text-xs font-semibold uppercase tracking-wide"
               style={{ color: SECONDARY_TEXT }}
@@ -2044,40 +2093,18 @@ function Footer() {
               />
             </div>
           </div>
-
-          <div className="flex flex-wrap items-center gap-5">
-            {[
-              { label: "Privacy Policy", href: "#" },
-              { label: "Terms", href: "#" },
-
-              { label: "Contact", href: "mailto:info@behavioranalystnetwork.com" },
-            ].map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-sm transition-colors hover:text-[#1946DA]"
-                style={{ color: SECONDARY_TEXT }}
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
         </div>
 
-        <div
-          className="pt-6 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
-          style={{ borderColor: BORDER }}
-        >
+        <div className="pt-6 border-t text-center" style={{ borderColor: BORDER }}>
           <p className="text-xs" style={{ color: SECONDARY_TEXT }}>
-            © {new Date().getFullYear()} Behavior Analyst Network. All rights reserved.
-          </p>
-          <p
-            className="text-xs leading-relaxed max-w-[60ch] text-right"
-            style={{ color: "#94a3b8" }}
-          >
-            Participation in BAN does not constitute a partnership, franchise, equity interest, or
-            ownership right. Participation terms are governed by written agreement and applicable
-            payer, licensing, ethical, accreditation, and regulatory requirements.
+            © {new Date().getFullYear()} Behavior Analyst Network. All Rights Reserved.{" "}
+            <a href="#" className="hover:underline" style={{ color: ROYAL_BLUE }}>
+              Terms of Use
+            </a>{" "}
+            and{" "}
+            <a href="#" className="hover:underline" style={{ color: ROYAL_BLUE }}>
+              Privacy Policy
+            </a>
           </p>
         </div>
       </div>
