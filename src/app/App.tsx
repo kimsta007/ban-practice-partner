@@ -163,10 +163,10 @@ function Header() {
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
         height: HEADER_H,
-        background: scrolled ? "rgba(255,255,255,0.82)" : "white",
-        backdropFilter: scrolled ? "saturate(180%) blur(14px)" : "none",
-        WebkitBackdropFilter: scrolled ? "saturate(180%) blur(14px)" : "none",
-        borderBottom: `1px solid ${scrolled ? "rgba(22,96,212,0.10)" : BORDER}`,
+        background: "rgba(255,255,255,0.82)",
+        backdropFilter: "saturate(180%) blur(14px)",
+        WebkitBackdropFilter: "saturate(180%) blur(14px)",
+        borderBottom: `1px solid ${scrolled ? "rgba(22,96,212,0.10)" : "rgba(0,0,0,0.08)"}`,
         boxShadow: scrolled ? "0 6px 24px -12px rgba(16,24,40,0.18)" : "none",
       }}
     >
@@ -322,7 +322,7 @@ function Hero() {
   return (
     <section
       className="relative flex flex-col items-center justify-center overflow-hidden text-center"
-      style={{ marginTop: HEADER_H, minHeight: `calc(100vh - ${HEADER_H}px)` }}
+      style={{ minHeight: "100vh", paddingTop: HEADER_H }}
     >
       <img
         src={heroPhoto}
