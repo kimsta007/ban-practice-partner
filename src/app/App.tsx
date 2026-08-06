@@ -978,7 +978,10 @@ function Financial() {
           >
             Your earnings should not stop at your own billable calendar.
           </h2>
-          <p className="text-lg leading-relaxed mb-12" style={{ color: SECONDARY_TEXT }}>
+          <p
+            className="text-left sm:text-center text-lg leading-relaxed mb-12"
+            style={{ color: SECONDARY_TEXT }}
+          >
             BAN Practice Partners are compensated for their own clinical work and participate in
             eligible revenue generated across the BCBA and BT-delivered services of the practice
             they lead. The model is designed to recognize the broader value created when a Practice
