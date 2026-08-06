@@ -24,9 +24,9 @@ const HERO_OVERLAY =
   "linear-gradient(170deg, rgba(10,12,18,0.45) 0%, rgba(10,12,18,0.68) 60%, rgba(10,12,18,0.78) 100%)"
 
 const BTN_SIZES = {
-  sm: { height: 42, padding: "0 20px", fontSize: 14, icon: 14 },
-  md: { height: 48, padding: "0 24px", fontSize: 14, icon: 15 },
-  lg: { height: 52, padding: "0 28px", fontSize: 16, icon: 15 },
+  sm: { height: 42, padding: "8px 20px", fontSize: 14, icon: 14 },
+  md: { height: 48, padding: "10px 24px", fontSize: 14, icon: 15 },
+  lg: { height: 52, padding: "12px 28px", fontSize: 16, icon: 15 },
 } as const
 
 type PrimaryButtonProps = {
@@ -53,9 +53,12 @@ function PrimaryButton({
   disabled,
 }: PrimaryButtonProps) {
   const s = BTN_SIZES[size]
-  const classes = `group ${block ? "flex w-full" : "inline-flex"} items-center justify-center gap-2 rounded-md font-bold text-white whitespace-nowrap transition-colors bg-[#1660D4] hover:bg-[#1254BC] disabled:opacity-60 ${className}`
+  // Full-width buttons may wrap; fixed-width ones stay on one line. Height is a
+  // floor rather than a fixed value so a long label grows the button instead of
+  // overflowing it.
+  const classes = `group ${block ? "flex w-full text-center" : "inline-flex whitespace-nowrap"} items-center justify-center gap-2 rounded-md font-bold text-white transition-colors bg-[#1660D4] hover:bg-[#1254BC] disabled:opacity-60 ${className}`
   const style = {
-    height: s.height,
+    minHeight: s.height,
     padding: s.padding,
     fontSize: s.fontSize,
   }
@@ -1978,7 +1981,7 @@ function ApplicationForm() {
                           Submitting...
                         </>
                       ) : (
-                        "Request a Confidential Conversation"
+                        "Request"
                       )}
                     </PrimaryButton>
                     <p className="text-xs text-center leading-relaxed" style={{ color: MUTED }}>
