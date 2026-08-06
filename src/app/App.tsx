@@ -163,7 +163,7 @@ function Header() {
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
         height: HEADER_H,
-        background: "rgba(255,255,255,0.82)",
+        background: "rgba(255,255,255,0.92)",
         backdropFilter: "saturate(180%) blur(24px)",
         WebkitBackdropFilter: "saturate(180%) blur(24px)",
         borderBottom: `1px solid ${scrolled ? "rgba(22,96,212,0.10)" : "rgba(0,0,0,0.08)"}`,
