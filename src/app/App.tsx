@@ -904,7 +904,7 @@ function SupportNetwork() {
       }}
     >
       <div className="relative mx-auto max-w-[1180px] px-6">
-        <div className="grid md:grid-cols-[1fr_540px] gap-12 lg:gap-14 items-center">
+        <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,540px)] gap-12 lg:gap-14 items-center">
           <div>
             <span
               className="inline-block text-xs font-bold tracking-[0.14em] uppercase mb-5 px-3 py-1 rounded-full"
@@ -937,11 +937,11 @@ function SupportNetwork() {
               something difficult lands on their desk.
             </p>
 
-            <div className="md:hidden grid grid-cols-2 gap-3">
+            <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
               {supportNodes.map((node) => (
                 <div
                   key={node.label}
-                  className="rounded-xl px-4 py-3 text-sm font-semibold leading-snug"
+                  className="flex items-center rounded-xl px-4 py-3 text-sm font-semibold leading-snug"
                   style={{
                     background: "rgba(91,200,245,0.08)",
                     color: LIGHT_AQUA,
