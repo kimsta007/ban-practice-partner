@@ -17,6 +17,21 @@ const BORDER = "#E1E6F0"
 
 const HEADLINE_GRADIENT = "linear-gradient(90deg, #5BC8F5 0%, #40A5EC 100%)"
 const HERO_OVERLAY = `linear-gradient(170deg, ${ICE} 0%, ${BLUE_TINT} 55%, #DCE9FA 100%)`
+// Regular hexagon with rounded corners, normalized to a 0-1 bounding box so it
+// scales to any element size via clipPathUnits="objectBoundingBox".
+const HEX_CLIP_ID = "hero-hex-round"
+const HEX_ROUND_PATH =
+  "M0.42,0.04 Q0.50,0.00 0.58,0.04 L0.92,0.21 Q1.00,0.25 1.00,0.33 L1.00,0.67 Q1.00,0.75 0.92,0.79 L0.58,0.96 Q0.50,1.00 0.42,0.96 L0.08,0.79 Q0.00,0.75 0.00,0.67 L0.00,0.33 Q0.00,0.25 0.08,0.21 Z"
+const HEX_CLIP = `url(#${HEX_CLIP_ID})`
+
+const HERO_HEXAGONS = [
+  { size: 92, top: "2%", left: "4%", tint: ROYAL_BLUE, factor: 0.14 },
+  { size: 56, top: "58%", left: "0%", tint: CYAN, factor: 0.34 },
+  { size: 130, top: "66%", left: "60%", tint: BLUE_DEEP, factor: 0.1 },
+  { size: 48, top: "6%", left: "82%", tint: CYAN, factor: 0.44 },
+  { size: 78, top: "36%", left: "86%", tint: ROYAL_BLUE, factor: 0.28 },
+  { size: 90, top: "64%", left: "20%", tint: CYAN_DEEP, factor: 0.25 },
+] as const
 
 const BTN_SIZES = {
   sm: { height: 42, padding: "8px 20px", fontSize: 14, icon: 14 },
@@ -179,7 +194,11 @@ function Header() {
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300"
       style={{
         height: HEADER_H,
-        background: !scrolled ? "transparent" : overHero ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.92)",
+        background: !scrolled
+          ? "transparent"
+          : overHero
+            ? "rgba(255,255,255,0.8)"
+            : "rgba(255,255,255,0.95)",
         borderBottom: `1px solid ${!scrolled ? "transparent" : overHero ? "rgba(0,0,0,0.06)" : "rgba(0,0,0,0.08)"}`,
         boxShadow: !scrolled
           ? "none"
@@ -332,12 +351,94 @@ function StickyMobileCTA() {
   )
 }
 
+function HeroHexArt({ scrollY }: { scrollY: number }) {
+  const maxSize = Math.max(...HERO_HEXAGONS.map((h) => h.size))
+
+  return (
+    <div
+      className="relative w-full lg:w-[46%] flex items-center justify-center"
+      style={{ minHeight: 380, filter: `drop-shadow(0px 10px 24px rgba(18, 84, 188, 0.35))` }}
+    >
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
+        <defs>
+          <clipPath id={HEX_CLIP_ID} clipPathUnits="objectBoundingBox">
+            <path d={HEX_ROUND_PATH} />
+          </clipPath>
+        </defs>
+      </svg>
+
+      {HERO_HEXAGONS.map((h, i) => {
+        const blur = Math.round((1 - h.size / maxSize) * 10)
+        return (
+          <div
+            key={i}
+            aria-hidden="true"
+            className="absolute"
+            style={{
+              width: h.size,
+              height: h.size,
+              top: h.top,
+              left: h.left,
+              clipPath: HEX_CLIP,
+              background: `linear-gradient(160deg, ${h.tint} 0%, rgba(255,255,255,0.4) 100%)`,
+              opacity: 0.32,
+              filter: blur ? `blur(${blur}px)` : undefined,
+              transform: `translateY(${scrollY * h.factor}px)`,
+              willChange: "transform",
+            }}
+          />
+        )
+      })}
+
+      <div
+        className="relative"
+        style={{
+          width: "min(78%, 340px)",
+          aspectRatio: "1 / 1.05",
+          clipPath: HEX_CLIP,
+          transform: `translateY(${scrollY * 0.06}px)`,
+          willChange: "transform",
+        }}
+      >
+        <img
+          src={heroPhoto}
+          alt="A BAN Practice Partner leading a session"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div
+          className="absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background:
+              "linear-gradient(190deg, rgba(22,96,212,0.12) 0%, rgba(18,84,188,0.06) 100%)",
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
 function Hero() {
   const accent = "bg-clip-text text-transparent"
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    let raf = 0
+    const handler = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => setScrollY(window.scrollY))
+    }
+    handler()
+    window.addEventListener("scroll", handler, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handler)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
 
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden text-center"
+      className="relative flex flex-col items-center justify-center overflow-hidden"
       style={{ minHeight: "80vh", paddingTop: HEADER_H }}
     >
       <div
@@ -346,58 +447,61 @@ function Hero() {
         style={{ background: HERO_OVERLAY }}
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-col items-center gap-6 px-6 py-16 md:py-20">
-        <h1
-          className="font-extrabold"
-          style={{
-            fontSize: "clamp(36px, 4.6vw, 58px)",
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
-            color: INK,
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          Lead a practice{" "}
-          <span className={accent} style={{ backgroundImage: HEADLINE_GRADIENT }}>
-            without
-          </span>
-          <br className="hidden md:inline" />{" "}
-          <span className={accent} style={{ backgroundImage: HEADLINE_GRADIENT }}>
-            going it alone.
-          </span>
-        </h1>
-
-        <span
-          className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-widest backdrop-blur-sm"
-          style={{ borderColor: BORDER, background: "rgba(255,255,255,0.6)", color: ROYAL_BLUE }}
-        >
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-            className="flex-shrink-0 opacity-70"
+      <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-col lg:flex-row items-center gap-12 px-6 py-16 md:py-20">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left gap-6 lg:w-[54%]">
+          <h1
+            className="font-extrabold"
+            style={{
+              fontSize: "clamp(36px, 4.6vw, 58px)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.01em",
+              color: INK,
+              fontFamily: "Montserrat, sans-serif",
+            }}
           >
-            <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M8 7.25v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            <circle cx="8" cy="4.9" r="0.9" fill="currentColor" />
-          </svg>
-          Now Enrolling Founding Practice Partners in Massachusetts
-        </span>
-
-        <div className="mt-2 flex flex-col justify-center gap-4 sm:flex-row">
-          <PrimaryButton href="#apply" size="lg" className="shadow-lg">
-            Start Your Application
-          </PrimaryButton>
-          <a
-            href="#existing-practices"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border px-8 text-base font-bold backdrop-blur-sm transition-all hover:bg-white"
-            style={{ minHeight: 52, borderColor: ROYAL_BLUE, background: "rgba(255,255,255,0.5)", color: ROYAL_BLUE }}
+            Lead a practice{" "}
+            <span className={accent} style={{ backgroundImage: HEADLINE_GRADIENT }}>
+              without going it alone.
+            </span>
+          </h1>
+          <div className="mt-2 flex flex-col justify-center gap-4 sm:flex-row">
+            <PrimaryButton href="#apply" size="lg" className="shadow-lg">
+              Start Your Application
+            </PrimaryButton>
+            <a
+              href="#existing-practices"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-full border px-8 text-base font-bold backdrop-blur-sm transition-all hover:bg-white"
+              style={{
+                minHeight: 52,
+                borderColor: ROYAL_BLUE,
+                background: "rgba(255,255,255,0.5)",
+                color: ROYAL_BLUE,
+              }}
+            >
+              Explore a Practice Transition
+            </a>
+          </div>
+          <span
+            className="inline-flex items-center gap-2 text-xs font-semibold"
+            style={{ color: MUTED }}
           >
-            Explore a Practice Transition
-          </a>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+              className="flex-shrink-0 opacity-70"
+            >
+              <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 7.25v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <circle cx="8" cy="4.9" r="0.9" fill="currentColor" />
+            </svg>
+            Now Enrolling Founding Practice Partners in Massachusetts
+          </span>{" "}
         </div>
+
+        <HeroHexArt scrollY={scrollY} />
       </div>
 
       <svg
