@@ -1,22 +1,27 @@
 import { useState, useEffect, type FormEvent, type ReactNode } from "react"
 import banLogo from "@/imports/ban_logo.png"
+import heroPhoto from "@/imports/hero.jpg"
 import carelonLogo from "@/imports/carelon-logo.png"
 import acqLogo from "@/imports/acq-logo.png"
 
-const ROYAL_BLUE = "#1946DA"
-const BLUE_DEEP = "#12329B"
-const BLUE_TINT = "#EAF0FE"
+const ROYAL_BLUE = "#1660D4"
+const BLUE_DEEP = "#1254BC"
+const BLUE_TINT = "#E8EFF9"
 const ICE = "#F4F7FC"
-const LIGHT_AQUA = "#98EBF4"
-const CYAN = "#19BFD9"
-const CYAN_DEEP = "#0E93AB"
-const INK = "#101828"
-const SECONDARY_TEXT = "#475467"
-const MUTED = "#667085"
-const BORDER = "#E2E8F3"
+const LIGHT_AQUA = "#5BC8F5"
+const CYAN = "#40A5EC"
+const CYAN_DEEP = "#2B7FC4"
+const INK = "#1A2D52"
+const SECONDARY_TEXT = "#4A5F87"
+const MUTED = "#6278A0"
+const BORDER = "#E1E6F0"
 
 const NAVY = "#001445"
 const NAVY_DEEP = "#00102F"
+
+const HEADLINE_GRADIENT = "linear-gradient(90deg, #5BC8F5 0%, #40A5EC 100%)"
+const HERO_OVERLAY =
+  "linear-gradient(170deg, rgba(10,12,18,0.45) 0%, rgba(10,12,18,0.68) 60%, rgba(10,12,18,0.78) 100%)"
 
 const BTN_SIZES = {
   sm: { height: 42, padding: "0 20px", fontSize: 14, icon: 14 },
@@ -48,9 +53,8 @@ function PrimaryButton({
   disabled,
 }: PrimaryButtonProps) {
   const s = BTN_SIZES[size]
-  const classes = `group ${block ? "flex w-full" : "inline-flex"} items-center justify-center gap-2 rounded-[10px] font-semibold text-white whitespace-nowrap transition-all hover:brightness-110 disabled:opacity-60 ${className}`
+  const classes = `group ${block ? "flex w-full" : "inline-flex"} items-center justify-center gap-2 rounded-md font-bold text-white whitespace-nowrap transition-colors bg-[#1660D4] hover:bg-[#1254BC] disabled:opacity-60 ${className}`
   const style = {
-    background: `linear-gradient(135deg, ${ROYAL_BLUE} 0%, ${BLUE_DEEP} 100%)`,
     height: s.height,
     padding: s.padding,
     fontSize: s.fontSize,
@@ -93,7 +97,26 @@ function PrimaryButton({
   )
 }
 
-const HEADER_H = 68
+const HEADER_H = 80
+
+function PhoneIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="flex-shrink-0"
+    >
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  )
+}
 
 const NAV_LINKS = [
   { label: "How It Works", id: "how-it-works" },
@@ -143,7 +166,7 @@ function Header() {
         background: scrolled ? "rgba(255,255,255,0.82)" : "white",
         backdropFilter: scrolled ? "saturate(180%) blur(14px)" : "none",
         WebkitBackdropFilter: scrolled ? "saturate(180%) blur(14px)" : "none",
-        borderBottom: `1px solid ${scrolled ? "rgba(25,70,218,0.10)" : BORDER}`,
+        borderBottom: `1px solid ${scrolled ? "rgba(22,96,212,0.10)" : BORDER}`,
         boxShadow: scrolled ? "0 6px 24px -12px rgba(16,24,40,0.18)" : "none",
       }}
     >
@@ -153,7 +176,11 @@ function Header() {
           className="flex flex-1 items-center shrink-0"
           aria-label="Behavior Analyst Network — home"
         >
-          <img src={banLogo} alt="Behavior Analyst Network" className="h-11 w-auto object-contain" />
+          <img
+            src={banLogo}
+            alt="Behavior Analyst Network"
+            className="h-16 w-auto object-contain"
+          />
         </a>
 
         <nav className="hidden md:flex flex-1 items-center justify-center gap-2">
@@ -167,7 +194,7 @@ function Header() {
                 className="group relative px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors"
                 style={{ color: isActive ? ROYAL_BLUE : SECONDARY_TEXT }}
               >
-                <span className="group-hover:text-[#1946DA] transition-colors">{l.label}</span>
+                <span className="group-hover:text-[#1660D4] transition-colors">{l.label}</span>
                 <span
                   className={`absolute left-3.5 right-3.5 bottom-1 h-[2px] rounded-full origin-left transition-transform duration-300 ${
                     isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
@@ -183,9 +210,10 @@ function Header() {
         <div className="hidden md:flex flex-1 items-center justify-end gap-6 shrink-0">
           <a
             href="mailto:info@behavioranalystnetwork.com"
-            className="text-sm font-semibold transition-colors hover:text-[#1946DA]"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-[#1660D4]"
             style={{ color: MUTED }}
           >
+            <PhoneIcon />
             Talk to us
           </a>
           <PrimaryButton href="#apply" size="sm">
@@ -279,7 +307,7 @@ function StickyMobileCTA() {
   }, [])
   return (
     <div
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-white border-t border-[#DCE6F2] transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`}
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-white border-t border-[#E1E6F0] transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`}
     >
       <PrimaryButton href="#apply" size="lg" block>
         Apply to Join BAN
@@ -288,145 +316,77 @@ function StickyMobileCTA() {
   )
 }
 
-const trustItems = [
-  "Accredited ABA platform",
-  "No upfront fee to join",
-  "BT workforce support",
-  "Practice-wide earnings participation",
-]
-
-function CyanCheck({ className = "" }: { className?: string }) {
-  return (
-    <span
-      className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${className}`}
-      style={{ background: `${CYAN}1F` }}
-      aria-hidden="true"
-    >
-      <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
-        <path
-          d="M3 8.5l3.2 3.2L13 5"
-          stroke={CYAN_DEEP}
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  )
-}
-
 function Hero() {
-  const [reduceMotion, setReduceMotion] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  )
-
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const handler = () => setReduceMotion(mql.matches)
-    mql.addEventListener("change", handler)
-    return () => mql.removeEventListener("change", handler)
-  }, [])
+  const accent = "bg-clip-text text-transparent"
 
   return (
-    <>
-      <section
-        className="relative overflow-hidden"
-        style={{ marginTop: HEADER_H, minHeight: "calc(100vh - " + HEADER_H + "px)" }}
-      >
-        <div
-          className="absolute inset-0 z-0"
-          aria-hidden="true"
-          style={{ background: `linear-gradient(160deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}
-        />
-        <video
-          className="absolute inset-0 z-[1] w-full h-full object-cover"
-          src={`${import.meta.env.BASE_URL}videos/hero_slideshow.mp4`}
-          preload="auto"
-          autoPlay={!reduceMotion}
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 z-[2]"
-          aria-hidden="true"
+    <section
+      className="relative flex flex-col items-center justify-center overflow-hidden text-center"
+      style={{ marginTop: HEADER_H, minHeight: `calc(100vh - ${HEADER_H}px)` }}
+    >
+      <img
+        src={heroPhoto}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-center"
+      />
+      <div
+        className="absolute inset-0 z-[1]"
+        aria-hidden="true"
+        style={{ background: HERO_OVERLAY }}
+      />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-col items-center gap-6 px-6 py-16 md:py-20">
+        <h1
+          className="font-extrabold"
           style={{
-            background: `linear-gradient(180deg, ${NAVY_DEEP}CC 0%, ${NAVY}A6 45%, ${NAVY_DEEP}E0 100%)`,
+            fontSize: "clamp(36px, 4.6vw, 58px)",
+            lineHeight: 1.15,
+            letterSpacing: "-0.01em",
+            color: "white",
+            fontFamily: "Montserrat, sans-serif",
           }}
-        />
+        >
+          Lead a practice{" "}
+          <span className={accent} style={{ backgroundImage: HEADLINE_GRADIENT }}>
+            without
+          </span>
+          <br className="hidden md:inline" />{" "}
+          <span className={accent} style={{ backgroundImage: HEADLINE_GRADIENT }}>
+            going it alone.
+          </span>
+        </h1>
 
-        <div className="absolute inset-0 z-10 mx-auto max-w-[1180px] w-full px-6 py-14 md:py-20 flex flex-col items-center justify-between gap-12 text-center">
-          <div className="flex flex-col items-center">
-            <h1
-              className="font-bold mb-6"
-              style={{
-                fontSize: "clamp(36px, 4.6vw, 58px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.01em",
-                color: "white",
-                fontFamily: "Montserrat, sans-serif",
-                maxWidth: "20ch",
-              }}
-            >
-              Lead a practice <span style={{ color: LIGHT_AQUA }}>without going it alone.</span>
-            </h1>
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+            className="flex-shrink-0 opacity-70"
+          >
+            <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M8 7.25v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <circle cx="8" cy="4.9" r="0.9" fill="currentColor" />
+          </svg>
+          Now Enrolling Founding Practice Partners in Massachusetts
+        </span>
 
-            <span
-              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
-              style={{
-                background: "rgba(152,235,244,0.10)",
-                color: LIGHT_AQUA,
-                border: "1px solid rgba(152,235,244,0.28)",
-              }}
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 16 16"
-                fill="none"
-                aria-hidden="true"
-                className="flex-shrink-0"
-              >
-                <circle cx="8" cy="8" r="7" stroke={LIGHT_AQUA} strokeWidth="1.5" />
-                <path d="M8 7.25v4" stroke={LIGHT_AQUA} strokeWidth="1.6" strokeLinecap="round" />
-                <circle cx="8" cy="4.9" r="0.9" fill={LIGHT_AQUA} />
-              </svg>
-              Now Enrolling Founding Practice Partners in Massachusetts
-            </span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <PrimaryButton href="#apply" size="lg">
-              Start Your Application
-            </PrimaryButton>
-            <a
-              href="#existing-practices"
-              className="inline-flex items-center justify-center px-7 rounded-[10px] text-base font-semibold text-center whitespace-nowrap border transition-colors hover:border-white hover:bg-white/10"
-              style={{ color: "white", borderColor: "rgba(255,255,255,0.35)", minHeight: 52 }}
-            >
-              Explore a Practice Transition
-            </a>
-          </div>
+        <div className="mt-2 flex flex-col justify-center gap-4 sm:flex-row">
+          <PrimaryButton href="#apply" size="lg" className="shadow-lg">
+            Start Your Application
+          </PrimaryButton>
+          <a
+            href="#existing-practices"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-white/50 bg-white/10 px-8 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white/15"
+            style={{ minHeight: 52 }}
+          >
+            Explore a Practice Transition
+          </a>
         </div>
-      </section>
-
-      <div className="bg-white py-10 md:py-12">
-        <ul className="mx-auto max-w-[1180px] px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-4 list-none p-0">
-          {trustItems.map((item) => (
-            <li key={item} className="flex items-center gap-2.5">
-              <CyanCheck />
-              <span
-                className="text-sm font-semibold leading-snug"
-                style={{ color: SECONDARY_TEXT }}
-              >
-                {item}
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
-    </>
+    </section>
   )
 }
 
@@ -515,7 +475,7 @@ function ThirdPath() {
                   background: dark
                     ? `linear-gradient(165deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)`
                     : "white",
-                  border: dark ? "1px solid rgba(152,235,244,0.20)" : `1px solid ${BORDER}`,
+                  border: dark ? "1px solid rgba(91,200,245,0.20)" : `1px solid ${BORDER}`,
                   boxShadow: dark
                     ? "0 20px 48px -20px rgba(0,20,69,0.55)"
                     : "0 1px 3px rgba(16,24,40,0.04)",
@@ -531,7 +491,7 @@ function ThirdPath() {
                   {dark && (
                     <span
                       className="text-[11px] font-bold px-2.5 py-1 rounded-full"
-                      style={{ background: "rgba(152,235,244,0.14)", color: LIGHT_AQUA }}
+                      style={{ background: "rgba(91,200,245,0.14)", color: LIGHT_AQUA }}
                     >
                       Recommended
                     </span>
@@ -557,7 +517,7 @@ function ThirdPath() {
 
                 <dl
                   className="mt-auto pt-5 flex flex-col gap-3"
-                  style={{ borderTop: `1px solid ${dark ? "rgba(152,235,244,0.16)" : BORDER}` }}
+                  style={{ borderTop: `1px solid ${dark ? "rgba(91,200,245,0.16)" : BORDER}` }}
                 >
                   {[
                     { label: "Autonomy", value: card.autonomy },
@@ -710,8 +670,8 @@ function YouLead() {
           <div
             className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
             style={{
-              background: "rgba(152,235,244,0.14)",
-              border: "1px solid rgba(152,235,244,0.28)",
+              background: "rgba(91,200,245,0.14)",
+              border: "1px solid rgba(91,200,245,0.28)",
             }}
           >
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -933,9 +893,9 @@ function SupportNetwork() {
             <span
               className="inline-block text-xs font-bold tracking-[0.14em] uppercase mb-5 px-3 py-1 rounded-full"
               style={{
-                background: "rgba(152,235,244,0.10)",
+                background: "rgba(91,200,245,0.10)",
                 color: LIGHT_AQUA,
-                border: "1px solid rgba(152,235,244,0.28)",
+                border: "1px solid rgba(91,200,245,0.28)",
               }}
             >
               The Support Network
@@ -967,9 +927,9 @@ function SupportNetwork() {
                   key={node.label}
                   className="rounded-xl px-4 py-3 text-sm font-semibold leading-snug"
                   style={{
-                    background: "rgba(152,235,244,0.08)",
+                    background: "rgba(91,200,245,0.08)",
                     color: LIGHT_AQUA,
-                    border: `1px solid rgba(152,235,244,0.22)`,
+                    border: `1px solid rgba(91,200,245,0.22)`,
                   }}
                 >
                   {node.label}
@@ -1158,7 +1118,7 @@ function ExistingPractices() {
             style={{
               background: "white",
               border: `1px solid ${BORDER}`,
-              boxShadow: "0 2px 24px rgba(25,70,218,0.06)",
+              boxShadow: "0 2px 24px rgba(22,96,212,0.06)",
             }}
           >
             <div className="flex items-center gap-3 mb-6">
@@ -1351,7 +1311,7 @@ function HowItWorks() {
 }
 
 const FIELD_BASE =
-  "w-full h-12 px-4 rounded-[10px] text-[15px] border outline-none transition-all focus:border-[#1946DA] focus:ring-4 focus:ring-[#1946DA]/12"
+  "w-full h-12 px-4 rounded-[10px] text-[15px] border outline-none transition-all focus:border-[#1660D4] focus:ring-4 focus:ring-[#1660D4]/12"
 
 function FieldLabel({ children, required }: { children: ReactNode; required?: boolean }) {
   return (
@@ -1453,7 +1413,7 @@ function OptionCards({
         return (
           <label
             key={opt}
-            className="relative flex items-center gap-3 px-4 py-3.5 rounded-[10px] border cursor-pointer transition-all text-[15px] font-medium hover:border-[#1946DA]/50 has-[input:focus-visible]:ring-4 has-[input:focus-visible]:ring-[#1946DA]/20"
+            className="relative flex items-center gap-3 px-4 py-3.5 rounded-[10px] border cursor-pointer transition-all text-[15px] font-medium hover:border-[#1660D4]/50 has-[input:focus-visible]:ring-4 has-[input:focus-visible]:ring-[#1660D4]/20"
             style={{
               borderColor: on ? ROYAL_BLUE : BORDER,
               background: on ? BLUE_TINT : "white",
@@ -2022,7 +1982,11 @@ function Footer() {
     <footer className="py-12 border-t" style={{ background: "white", borderColor: BORDER }}>
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
-          <img src={banLogo} alt="Behavior Analyst Network" className="h-12 w-auto object-contain" />
+          <img
+            src={banLogo}
+            alt="Behavior Analyst Network"
+            className="h-12 w-auto object-contain"
+          />
 
           <div className="flex flex-col gap-2">
             <span
@@ -2055,7 +2019,7 @@ function Footer() {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-sm transition-colors hover:text-[#1946DA]"
+                className="text-sm transition-colors hover:text-[#1660D4]"
                 style={{ color: SECONDARY_TEXT }}
               >
                 {item.label}
