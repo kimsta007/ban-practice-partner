@@ -418,9 +418,65 @@ function HeroHexArt({ scrollY }: { scrollY: number }) {
   )
 }
 
+const HERO_LETTER_STEP = 0.026
+
+function AnimatedLetters({
+  text,
+  startIndex,
+  gradient,
+}: {
+  text: string
+  startIndex: number
+  gradient?: boolean
+}) {
+  const totalChars = text.length
+  const tokens = text.split(/(\s+)/).filter((t) => t.length > 0)
+  let charPos = 0
+
+  return (
+    <>
+      {tokens.map((token, ti) => {
+        const isSpace = /^\s+$/.test(token)
+        const letters = Array.from(token).map((ch) => {
+          const pos = charPos++
+          const globalIndex = startIndex + pos
+          return (
+            <span
+              key={globalIndex}
+              className={`hero-letter${gradient ? " bg-clip-text text-transparent" : ""}`}
+              style={{
+                animationDelay: `${globalIndex * HERO_LETTER_STEP}s`,
+                ...(gradient
+                  ? {
+                      backgroundImage: HEADLINE_GRADIENT,
+                      backgroundSize: `${totalChars}ch 100%`,
+                      backgroundPosition: `${-pos}ch 0`,
+                    }
+                  : {}),
+              }}
+            >
+              {ch === " " ? " " : ch}
+            </span>
+          )
+        })
+        return isSpace ? (
+          <span key={`s-${ti}`}>{letters}</span>
+        ) : (
+          <span key={`w-${ti}`} className="inline-block" style={{ whiteSpace: "nowrap" }}>
+            {letters}
+          </span>
+        )
+      })}
+    </>
+  )
+}
+
 function Hero() {
-  const accent = "bg-clip-text text-transparent"
   const [scrollY, setScrollY] = useState(0)
+  const headlinePlain = "Lead a practice "
+  const headlineAccent = "without going it alone."
+  const heroLetterCount = headlinePlain.length + headlineAccent.length
+  const heroTextDelay = heroLetterCount * HERO_LETTER_STEP + 0.35
 
   useEffect(() => {
     let raf = 0
@@ -459,12 +515,17 @@ function Hero() {
               fontFamily: "Montserrat, sans-serif",
             }}
           >
-            Lead a practice{" "}
-            <span className={accent} style={{ backgroundImage: HEADLINE_GRADIENT }}>
-              without going it alone.
-            </span>
+            <AnimatedLetters text={headlinePlain} startIndex={0} />
+            <AnimatedLetters
+              text={headlineAccent}
+              startIndex={headlinePlain.length}
+              gradient
+            />
           </h1>
-          <div className="mt-2 flex flex-col justify-center gap-4 sm:flex-row">
+          <div
+            className="mt-2 flex flex-col justify-center gap-4 sm:flex-row hero-fade-up"
+            style={{ animationDelay: `${heroTextDelay}s` }}
+          >
             <PrimaryButton href="#apply" size="lg" className="shadow-lg">
               Start Your Application
             </PrimaryButton>
@@ -482,8 +543,8 @@ function Hero() {
             </a>
           </div>
           <span
-            className="inline-flex items-center gap-2 text-xs font-semibold"
-            style={{ color: MUTED }}
+            className="inline-flex items-center gap-2 text-xs font-semibold hero-fade-up"
+            style={{ color: MUTED, animationDelay: `${heroTextDelay + 0.15}s` }}
           >
             <svg
               width="13"
