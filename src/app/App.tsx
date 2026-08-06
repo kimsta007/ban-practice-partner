@@ -170,7 +170,9 @@ function Header() {
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300"
       style={{
         height: HEADER_H,
-        background: overHero ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.92)",
+        // 0.5 over the hero rather than a thinner tint: the photo behind the bar
+        // composites to mid-grey, where neither dark nor white nav text clears AA.
+        background: overHero ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.92)",
         borderBottom: `1px solid ${overHero ? "rgba(255,255,255,0.20)" : "rgba(0,0,0,0.08)"}`,
         boxShadow: `0 4px 24px rgba(0,0,0,${overHero ? 0.15 : 0.08}), inset 0 1px 0 rgba(255,255,255,0.25)`,
       }}
