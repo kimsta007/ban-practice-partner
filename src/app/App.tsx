@@ -165,14 +165,19 @@ function Header() {
     }
   }, [menuOpen])
 
+  // Over the hero the bar is a thin tint over the photo, so its contents go
+  // white. Past it the bar is near-solid white and they go back to dark.
+  const onGlass = overHero
+  const navText = onGlass ? "rgba(255,255,255,0.92)" : "#374151"
+  const navTextActive = onGlass ? "#FFFFFF" : ROYAL_BLUE
+  const navHover = onGlass ? "hover:text-white" : "hover:text-gray-900"
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300"
       style={{
         height: HEADER_H,
-        // 0.5 over the hero rather than a thinner tint: the photo behind the bar
-        // composites to mid-grey, where neither dark nor white nav text clears AA.
-        background: overHero ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.92)",
+        background: onGlass ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.92)",
         borderBottom: `1px solid ${overHero ? "rgba(255,255,255,0.20)" : "rgba(0,0,0,0.08)"}`,
         boxShadow: `0 4px 24px rgba(0,0,0,${overHero ? 0.15 : 0.08}), inset 0 1px 0 rgba(255,255,255,0.25)`,
       }}
@@ -198,15 +203,15 @@ function Header() {
                 key={l.id}
                 href={`#${l.id}`}
                 aria-current={isActive ? "true" : undefined}
-                className="group relative py-2 text-sm font-semibold transition-colors hover:text-gray-900"
-                style={{ color: isActive ? ROYAL_BLUE : "#374151" }}
+                className={`group relative py-2 text-sm font-semibold transition-colors ${navHover}`}
+                style={{ color: isActive ? navTextActive : navText }}
               >
                 {l.label}
                 <span
                   className={`absolute inset-x-0 bottom-0 h-[2px] origin-left rounded-full transition-transform duration-300 ${
                     isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
-                  style={{ background: ROYAL_BLUE }}
+                  style={{ background: navTextActive }}
                   aria-hidden="true"
                 />
               </a>
@@ -217,8 +222,8 @@ function Header() {
         <div className="hidden shrink-0 items-center gap-4 md:flex">
           <a
             href="mailto:info@behavioranalystnetwork.com"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-gray-900"
-            style={{ color: "#374151" }}
+            className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${navHover}`}
+            style={{ color: navText }}
           >
             <PhoneIcon />
             Talk to us
@@ -230,7 +235,7 @@ function Header() {
 
         <button
           className="md:hidden -mr-2 p-2 rounded-lg transition-colors"
-          style={{ color: menuOpen ? ROYAL_BLUE : SECONDARY_TEXT }}
+          style={{ color: menuOpen ? ROYAL_BLUE : navText }}
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
