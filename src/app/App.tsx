@@ -8,16 +8,12 @@ const ROYAL_BLUE = "#1660D4"
 const BLUE_DEEP = "#1254BC"
 const BLUE_TINT = "#E8EFF9"
 const ICE = "#F4F7FC"
-const LIGHT_AQUA = "#5BC8F5"
 const CYAN = "#40A5EC"
 const CYAN_DEEP = "#2B7FC4"
 const INK = "#1A2D52"
 const SECONDARY_TEXT = "#4A5F87"
 const MUTED = "#6278A0"
 const BORDER = "#E1E6F0"
-
-const NAVY = "#001445"
-const NAVY_DEEP = "#00102F"
 
 const HEADLINE_GRADIENT = "linear-gradient(90deg, #5BC8F5 0%, #40A5EC 100%)"
 const HERO_OVERLAY =
@@ -419,10 +415,10 @@ function Meter({ level, onDark }: { level: number; onDark?: boolean }) {
             background:
               i < level
                 ? onDark
-                  ? LIGHT_AQUA
+                  ? "white"
                   : ROYAL_BLUE
                 : onDark
-                  ? "rgba(255,255,255,0.18)"
+                  ? "rgba(255,255,255,0.30)"
                   : BORDER,
           }}
         />
@@ -491,25 +487,23 @@ function ThirdPath() {
                 className="relative rounded-2xl p-7 flex flex-col"
                 style={{
                   background: dark
-                    ? `linear-gradient(165deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)`
+                    ? `linear-gradient(165deg, ${ROYAL_BLUE} 0%, ${BLUE_DEEP} 100%)`
                     : "white",
-                  border: dark ? "1px solid rgba(91,200,245,0.20)" : `1px solid ${BORDER}`,
-                  boxShadow: dark
-                    ? "0 20px 48px -20px rgba(0,20,69,0.55)"
-                    : "0 1px 3px rgba(16,24,40,0.04)",
+                  border: dark ? "1px solid rgba(255,255,255,0.22)" : `1px solid ${BORDER}`,
+                  boxShadow: "0 1px 3px rgba(16,24,40,0.04)",
                 }}
               >
                 <div className="flex items-center justify-between gap-3 mb-5">
                   <span
                     className="text-[11px] font-bold tracking-[0.14em] uppercase"
-                    style={{ color: dark ? LIGHT_AQUA : MUTED }}
+                    style={{ color: dark ? "white" : MUTED }}
                   >
                     {card.kicker}
                   </span>
                   {dark && (
                     <span
                       className="text-[11px] font-bold px-2.5 py-1 rounded-full"
-                      style={{ background: "rgba(91,200,245,0.14)", color: LIGHT_AQUA }}
+                      style={{ background: "rgba(255,255,255,0.18)", color: "white" }}
                     >
                       Recommended
                     </span>
@@ -528,14 +522,14 @@ function ThirdPath() {
                 </h3>
                 <p
                   className="text-[15px] leading-relaxed mb-8"
-                  style={{ color: dark ? "#bcd8f5" : SECONDARY_TEXT }}
+                  style={{ color: dark ? "#E8EFF9" : SECONDARY_TEXT }}
                 >
                   {card.desc}
                 </p>
 
                 <dl
                   className="mt-auto pt-5 flex flex-col gap-3"
-                  style={{ borderTop: `1px solid ${dark ? "rgba(91,200,245,0.16)" : BORDER}` }}
+                  style={{ borderTop: `1px solid ${dark ? "rgba(255,255,255,0.20)" : BORDER}` }}
                 >
                   {[
                     { label: "Autonomy", value: card.autonomy },
@@ -544,7 +538,7 @@ function ThirdPath() {
                     <div key={row.label} className="flex items-center justify-between gap-4">
                       <dt
                         className="text-xs font-semibold"
-                        style={{ color: dark ? "#9fc4ea" : MUTED }}
+                        style={{ color: dark ? "#E8EFF9" : MUTED }}
                       >
                         {row.label}
                       </dt>
@@ -746,44 +740,37 @@ function NetworkDiagram() {
 
   return (
     <figure className="relative m-0 mx-auto w-full max-w-[560px]">
-      <svg viewBox="0 0 760 760" className="block w-full h-auto" role="img">
-        <title>
-          {`The BAN Practice Partner surrounded by network support: ${supportNodes
-            .map((n) => n.label)
-            .join(", ")}.`}
-        </title>
+      <svg
+        viewBox="0 0 760 760"
+        className="block w-full h-auto"
+        role="img"
+        aria-label={`The BAN Practice Partner surrounded by network support: ${supportNodes
+          .map((n) => n.label)
+          .join(", ")}.`}
+      >
         <defs>
           <radialGradient id="net-core" cx="50%" cy="22%" r="88%">
-            <stop offset="0%" stopColor="#2A6BEA" />
-            <stop offset="52%" stopColor="#0A3EAE" />
-            <stop offset="100%" stopColor="#00246E" />
+            <stop offset="0%" stopColor="#3B78E8" />
+            <stop offset="52%" stopColor="#1660D4" />
+            <stop offset="100%" stopColor="#1254BC" />
           </radialGradient>
           <radialGradient id="net-node" cx="50%" cy="18%" r="95%">
-            <stop offset="0%" stopColor="#013191" />
-            <stop offset="100%" stopColor="#01143F" />
+            <stop offset="0%" stopColor="#2A6BEA" />
+            <stop offset="100%" stopColor="#1660D4" />
           </radialGradient>
           <linearGradient id="net-link" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#0A6FD0" />
-            <stop offset="100%" stopColor="#58BCFE" />
+            <stop offset="0%" stopColor="#1660D4" />
+            <stop offset="100%" stopColor="#5BC8F5" />
           </linearGradient>
-          <radialGradient id="net-halo" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#0A50C8" stopOpacity="0.42" />
-            <stop offset="100%" stopColor="#0A50C8" stopOpacity="0" />
-          </radialGradient>
-          <filter id="net-glow" x="-70%" y="-70%" width="240%" height="240%">
-            <feGaussianBlur stdDeviation="9" />
-          </filter>
         </defs>
-
-        <circle cx={NET.cx} cy={NET.cy} r={330} fill="url(#net-halo)" />
 
         <circle
           cx={NET.cx}
           cy={NET.cy}
           r={NET.orbit}
           fill="none"
-          stroke="#3C5BE0"
-          strokeOpacity="0.55"
+          stroke="#1660D4"
+          strokeOpacity="0.28"
           strokeWidth="1.5"
           strokeDasharray="7 9"
         />
@@ -801,24 +788,7 @@ function NetworkDiagram() {
           />
         ))}
 
-        <circle
-          cx={NET.cx}
-          cy={NET.cy}
-          r={NET.coreR}
-          fill="#0A50C8"
-          opacity="0.55"
-          filter="url(#net-glow)"
-        />
         <circle cx={NET.cx} cy={NET.cy} r={NET.coreR} fill="url(#net-core)" />
-        <circle
-          cx={NET.cx}
-          cy={NET.cy}
-          r={NET.coreR}
-          fill="none"
-          stroke="#5AB0FF"
-          strokeOpacity="0.6"
-          strokeWidth="1.5"
-        />
         <text
           x={NET.cx}
           y={NET.cy - 14}
@@ -858,23 +828,7 @@ function NetworkDiagram() {
 
         {nodes.map((n) => (
           <g key={n.label}>
-            <circle
-              cx={n.x}
-              cy={n.y}
-              r={NET.nodeR}
-              fill="#2E8FE0"
-              opacity="0.3"
-              filter="url(#net-glow)"
-            />
-            <circle
-              cx={n.x}
-              cy={n.y}
-              r={NET.nodeR}
-              fill="url(#net-node)"
-              stroke="#4FCBFF"
-              strokeOpacity="0.9"
-              strokeWidth="1.75"
-            />
+            <circle cx={n.x} cy={n.y} r={NET.nodeR} fill="url(#net-node)" />
             {n.lines.map((line, li) => (
               <text
                 key={line}
@@ -902,7 +856,7 @@ function SupportNetwork() {
       id="support"
       className="relative overflow-hidden py-20 md:py-28"
       style={{
-        background: `linear-gradient(180deg, ${NAVY_DEEP} 0%, ${NAVY} 22%, ${NAVY} 78%, ${NAVY_DEEP} 100%)`,
+        background: ICE,
         scrollMarginTop: HEADER_H,
       }}
     >
@@ -912,9 +866,8 @@ function SupportNetwork() {
             <span
               className="inline-block text-xs font-bold tracking-[0.14em] uppercase mb-5 px-3 py-1 rounded-full"
               style={{
-                background: "rgba(91,200,245,0.10)",
-                color: LIGHT_AQUA,
-                border: "1px solid rgba(91,200,245,0.28)",
+                background: BLUE_TINT,
+                color: ROYAL_BLUE,
               }}
             >
               The Support Network
@@ -923,18 +876,18 @@ function SupportNetwork() {
               className="font-bold mb-5 leading-tight"
               style={{
                 fontSize: "clamp(28px, 3.5vw, 42px)",
-                color: "white",
+                color: INK,
                 fontFamily: "Montserrat, sans-serif",
               }}
             >
               Independent should never mean isolated.
             </h2>
-            <p className="text-lg leading-relaxed mb-5" style={{ color: "#bcd8f5" }}>
+            <p className="text-lg leading-relaxed mb-5" style={{ color: SECONDARY_TEXT }}>
               The hardest part of going alone is not simply the paperwork. It is becoming the only
               person expected to solve every clinical, staffing, family, payer, and compliance
               problem.
             </p>
-            <p className="text-lg leading-relaxed mb-8" style={{ color: "#bcd8f5" }}>
+            <p className="text-lg leading-relaxed mb-8" style={{ color: SECONDARY_TEXT }}>
               BAN is a clinical and operating network, not merely a back office vendor. Practice
               Partners retain meaningful autonomy while gaining experienced people to call when
               something difficult lands on their desk.
@@ -946,9 +899,9 @@ function SupportNetwork() {
                   key={node.label}
                   className="flex items-center rounded-xl px-4 py-3 text-sm font-semibold leading-snug"
                   style={{
-                    background: "rgba(91,200,245,0.08)",
-                    color: LIGHT_AQUA,
-                    border: `1px solid rgba(91,200,245,0.22)`,
+                    background: "white",
+                    color: INK,
+                    border: `1px solid ${BORDER}`,
                   }}
                 >
                   {node.label}
