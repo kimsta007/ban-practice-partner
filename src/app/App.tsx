@@ -126,14 +126,21 @@ const NAV_LINKS = [
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState("")
 
+  // The glass tint only has the hero photo to read against. Past it the bar
+  // crosses white and navy sections, so it goes solid to stay legible.
+  const [overHero, setOverHero] = useState(true)
+
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 8)
+    const handler = () => setOverHero(window.scrollY < window.innerHeight - HEADER_H)
     handler()
     window.addEventListener("scroll", handler, { passive: true })
-    return () => window.removeEventListener("scroll", handler)
+    window.addEventListener("resize", handler)
+    return () => {
+      window.removeEventListener("scroll", handler)
+      window.removeEventListener("resize", handler)
+    }
   }, [])
 
   useEffect(() => {
@@ -160,16 +167,12 @@ function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300"
       style={{
         height: HEADER_H,
-        background: "rgba(255,255,255,0.92)",
-        backdropFilter: "saturate(180%) blur(24px)",
-        WebkitBackdropFilter: "saturate(180%) blur(24px)",
-        borderBottom: `1px solid ${scrolled ? "rgba(22,96,212,0.10)" : "rgba(0,0,0,0.08)"}`,
-        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 28px -14px rgba(16,24,40,${
-          scrolled ? 0.3 : 0.22
-        })`,
+        background: overHero ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.92)",
+        borderBottom: `1px solid ${overHero ? "rgba(255,255,255,0.20)" : "rgba(0,0,0,0.08)"}`,
+        boxShadow: `0 4px 24px rgba(0,0,0,${overHero ? 0.15 : 0.08}), inset 0 1px 0 rgba(255,255,255,0.25)`,
       }}
     >
       <div className="mx-auto flex h-full max-w-screen-xl items-center justify-between gap-6 px-6">
