@@ -164,10 +164,12 @@ function Header() {
       style={{
         height: HEADER_H,
         background: "rgba(255,255,255,0.82)",
-        backdropFilter: "saturate(180%) blur(14px)",
-        WebkitBackdropFilter: "saturate(180%) blur(14px)",
+        backdropFilter: "saturate(180%) blur(24px)",
+        WebkitBackdropFilter: "saturate(180%) blur(24px)",
         borderBottom: `1px solid ${scrolled ? "rgba(22,96,212,0.10)" : "rgba(0,0,0,0.08)"}`,
-        boxShadow: scrolled ? "0 6px 24px -12px rgba(16,24,40,0.18)" : "none",
+        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 28px -14px rgba(16,24,40,${
+          scrolled ? 0.3 : 0.22
+        })`,
       }}
     >
       <div className="mx-auto flex h-full max-w-screen-xl items-center justify-between gap-6 px-6">
