@@ -680,11 +680,15 @@ function YouLead() {
 
         <div
           className="rounded-2xl px-8 py-7 flex flex-col sm:flex-row gap-5 items-start sm:items-center"
-          style={{ background: BLUE_TINT, border: `1px solid ${BORDER}` }}
+          style={{
+            background: "white",
+            border: `1px solid ${BORDER}`,
+            boxShadow: "0 1px 3px rgba(16,24,40,0.04)",
+          }}
         >
           <div
             className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
-            style={{ background: "white", border: `1px solid ${BORDER}` }}
+            style={{ background: BLUE_TINT, border: `1px solid ${BORDER}` }}
           >
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
               <rect
