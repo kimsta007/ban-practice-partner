@@ -16,8 +16,7 @@ const MUTED = "#6278A0"
 const BORDER = "#E1E6F0"
 
 const HEADLINE_GRADIENT = "linear-gradient(90deg, #5BC8F5 0%, #40A5EC 100%)"
-const HERO_OVERLAY =
-  "linear-gradient(170deg, rgba(10,12,18,0.45) 0%, rgba(10,12,18,0.68) 60%, rgba(10,12,18,0.78) 100%)"
+const HERO_OVERLAY = `linear-gradient(170deg, ${ICE} 0%, ${BLUE_TINT} 55%, #DCE9FA 100%)`
 
 const BTN_SIZES = {
   sm: { height: 42, padding: "8px 20px", fontSize: 14, icon: 14 },
@@ -52,7 +51,7 @@ function PrimaryButton({
   // Full-width buttons may wrap; fixed-width ones stay on one line. Height is a
   // floor rather than a fixed value so a long label grows the button instead of
   // overflowing it.
-  const classes = `group ${block ? "flex w-full text-center" : "inline-flex whitespace-nowrap"} items-center justify-center gap-2 rounded-md font-bold text-white transition-colors bg-[#1660D4] hover:bg-[#1254BC] disabled:opacity-60 ${className}`
+  const classes = `group ${block ? "flex w-full text-center" : "inline-flex whitespace-nowrap"} items-center justify-center gap-2 rounded-full font-bold text-white transition-colors bg-[#1660D4] hover:bg-[#1254BC] disabled:opacity-60 ${className}`
   const style = {
     minHeight: s.height,
     padding: s.padding,
@@ -133,9 +132,13 @@ function Header() {
   // The glass tint only has the hero photo to read against. Past it the bar
   // crosses white and navy sections, so it goes solid to stay legible.
   const [overHero, setOverHero] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const handler = () => setOverHero(window.scrollY < window.innerHeight - HEADER_H)
+    const handler = () => {
+      setOverHero(window.scrollY < window.innerHeight - HEADER_H)
+      setScrolled(window.scrollY > 10)
+    }
     handler()
     window.addEventListener("scroll", handler, { passive: true })
     window.addEventListener("resize", handler)
@@ -167,21 +170,20 @@ function Header() {
     }
   }, [menuOpen])
 
-  // Over the hero the bar is a thin tint over the photo, so its contents go
-  // white. Past it the bar is near-solid white and they go back to dark.
-  const onGlass = overHero
-  const navText = onGlass ? "rgba(255,255,255,0.92)" : "#374151"
-  const navTextActive = onGlass ? "#FFFFFF" : ROYAL_BLUE
-  const navHover = onGlass ? "hover:text-white" : "hover:text-gray-900"
+  const navText = "#374151"
+  const navTextActive = ROYAL_BLUE
+  const navHover = "hover:text-gray-900"
 
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300"
       style={{
         height: HEADER_H,
-        background: onGlass ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.92)",
-        borderBottom: `1px solid ${overHero ? "rgba(255,255,255,0.20)" : "rgba(0,0,0,0.08)"}`,
-        boxShadow: `0 4px 24px rgba(0,0,0,${overHero ? 0.15 : 0.08}), inset 0 1px 0 rgba(255,255,255,0.25)`,
+        background: !scrolled ? "transparent" : overHero ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.92)",
+        borderBottom: `1px solid ${!scrolled ? "transparent" : overHero ? "rgba(0,0,0,0.06)" : "rgba(0,0,0,0.08)"}`,
+        boxShadow: !scrolled
+          ? "none"
+          : "0 4px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.25)",
       }}
     >
       <div className="flex h-full w-full items-center justify-between gap-6 px-6 md:px-10">
@@ -336,14 +338,8 @@ function Hero() {
   return (
     <section
       className="relative flex flex-col items-center justify-center overflow-hidden text-center"
-      style={{ minHeight: "100vh", paddingTop: HEADER_H }}
+      style={{ minHeight: "80vh", paddingTop: HEADER_H }}
     >
-      <img
-        src={heroPhoto}
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 z-0 h-full w-full object-cover object-center"
-      />
       <div
         className="absolute inset-0 z-[1]"
         aria-hidden="true"
@@ -357,7 +353,7 @@ function Hero() {
             fontSize: "clamp(36px, 4.6vw, 58px)",
             lineHeight: 1.15,
             letterSpacing: "-0.01em",
-            color: "white",
+            color: INK,
             fontFamily: "Montserrat, sans-serif",
           }}
         >
@@ -371,7 +367,10 @@ function Hero() {
           </span>
         </h1>
 
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
+        <span
+          className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-widest backdrop-blur-sm"
+          style={{ borderColor: BORDER, background: "rgba(255,255,255,0.6)", color: ROYAL_BLUE }}
+        >
           <svg
             width="13"
             height="13"
@@ -393,13 +392,23 @@ function Hero() {
           </PrimaryButton>
           <a
             href="#existing-practices"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-white/50 bg-white/10 px-8 text-base font-bold text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white/15"
-            style={{ minHeight: 52 }}
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full border px-8 text-base font-bold backdrop-blur-sm transition-all hover:bg-white"
+            style={{ minHeight: 52, borderColor: ROYAL_BLUE, background: "rgba(255,255,255,0.5)", color: ROYAL_BLUE }}
           >
             Explore a Practice Transition
           </a>
         </div>
       </div>
+
+      <svg
+        className="absolute bottom-0 left-0 z-[2] w-full"
+        style={{ height: "7vw", minHeight: 48, maxHeight: 110 }}
+        viewBox="0 0 1440 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path d="M0,0 C480,100 960,100 1440,0 L1440,100 L0,100 Z" fill={ICE} />
+      </svg>
     </section>
   )
 }
