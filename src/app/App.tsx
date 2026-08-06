@@ -1981,7 +1981,7 @@ function ApplicationForm() {
                           Submitting...
                         </>
                       ) : (
-                        "Request"
+                        "Submit Application"
                       )}
                     </PrimaryButton>
                     <p className="text-xs text-center leading-relaxed" style={{ color: MUTED }}>
