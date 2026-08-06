@@ -170,10 +170,10 @@ function Header() {
         boxShadow: scrolled ? "0 6px 24px -12px rgba(16,24,40,0.18)" : "none",
       }}
     >
-      <div className="w-full px-6 md:px-10 lg:px-14 h-full flex items-center gap-6">
+      <div className="mx-auto flex h-full max-w-screen-xl items-center justify-between gap-6 px-6">
         <a
           href="#top"
-          className="flex flex-1 items-center shrink-0"
+          className="flex shrink-0 items-center"
           aria-label="Behavior Analyst Network — home"
         >
           <img
@@ -183,7 +183,7 @@ function Header() {
           />
         </a>
 
-        <nav className="hidden md:flex flex-1 items-center justify-center gap-2">
+        <nav className="hidden items-center gap-10 md:flex">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.id
             return (
@@ -191,12 +191,12 @@ function Header() {
                 key={l.id}
                 href={`#${l.id}`}
                 aria-current={isActive ? "true" : undefined}
-                className="group relative px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors"
-                style={{ color: isActive ? ROYAL_BLUE : SECONDARY_TEXT }}
+                className="group relative py-2 text-sm font-semibold transition-colors hover:text-gray-900"
+                style={{ color: isActive ? ROYAL_BLUE : "#374151" }}
               >
-                <span className="group-hover:text-[#1660D4] transition-colors">{l.label}</span>
+                {l.label}
                 <span
-                  className={`absolute left-3.5 right-3.5 bottom-1 h-[2px] rounded-full origin-left transition-transform duration-300 ${
+                  className={`absolute inset-x-0 bottom-0 h-[2px] origin-left rounded-full transition-transform duration-300 ${
                     isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
                   style={{ background: ROYAL_BLUE }}
@@ -207,11 +207,11 @@ function Header() {
           })}
         </nav>
 
-        <div className="hidden md:flex flex-1 items-center justify-end gap-6 shrink-0">
+        <div className="hidden shrink-0 items-center gap-4 md:flex">
           <a
             href="mailto:info@behavioranalystnetwork.com"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-[#1660D4]"
-            style={{ color: MUTED }}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-gray-900"
+            style={{ color: "#374151" }}
           >
             <PhoneIcon />
             Talk to us
