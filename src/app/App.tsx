@@ -118,10 +118,12 @@ function PhoneIcon() {
   )
 }
 
+// Kept in the order the sections appear on the page, so the active-link
+// underline advances left to right as you scroll.
 const NAV_LINKS = [
-  { label: "How It Works", id: "how-it-works" },
   { label: "Support", id: "support" },
   { label: "Existing Practices", id: "existing-practices" },
+  { label: "How It Works", id: "how-it-works" },
 ]
 
 function Header() {
