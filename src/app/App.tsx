@@ -182,7 +182,7 @@ function Header() {
         boxShadow: `0 4px 24px rgba(0,0,0,${overHero ? 0.15 : 0.08}), inset 0 1px 0 rgba(255,255,255,0.25)`,
       }}
     >
-      <div className="mx-auto flex h-full max-w-screen-xl items-center justify-between gap-6 px-6">
+      <div className="flex h-full w-full items-center justify-between gap-6 px-6 md:px-10">
         <a
           href="#top"
           className="flex shrink-0 items-center"
@@ -195,7 +195,7 @@ function Header() {
           />
         </a>
 
-        <nav className="hidden items-center gap-10 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.id
             return (
