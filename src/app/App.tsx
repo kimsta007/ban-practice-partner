@@ -121,6 +121,7 @@ function PhoneIcon() {
 // Kept in the order the sections appear on the page, so the active-link
 // underline advances left to right as you scroll.
 const NAV_LINKS = [
+  { label: "Existing Paths", id: "existing-paths" },
   { label: "Support", id: "support" },
   { label: "Existing Practices", id: "existing-practices" },
   { label: "How It Works", id: "how-it-works" },
@@ -197,7 +198,7 @@ function Header() {
           />
         </a>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-6 min-[1120px]:flex">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.id
             return (
@@ -205,7 +206,7 @@ function Header() {
                 key={l.id}
                 href={`#${l.id}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`group relative py-2 text-sm font-semibold transition-colors ${navHover}`}
+                className={`group relative whitespace-nowrap py-2 text-sm font-semibold transition-colors ${navHover}`}
                 style={{ color: isActive ? navTextActive : navText }}
               >
                 {l.label}
@@ -221,7 +222,7 @@ function Header() {
           })}
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-4 md:flex">
+        <div className="hidden shrink-0 items-center gap-4 min-[1120px]:flex">
           <a
             href="mailto:info@behavioranalystnetwork.com"
             className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${navHover}`}
@@ -236,7 +237,7 @@ function Header() {
         </div>
 
         <button
-          className="md:hidden -mr-2 p-2 rounded-lg transition-colors"
+          className="min-[1120px]:hidden -mr-2 p-2 rounded-lg transition-colors"
           style={{ color: menuOpen ? ROYAL_BLUE : navText }}
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -254,7 +255,7 @@ function Header() {
       </div>
 
       <div
-        className={`md:hidden fixed left-0 right-0 border-b overflow-hidden transition-all duration-300 ${
+        className={`min-[1120px]:hidden fixed left-0 right-0 border-b overflow-hidden transition-all duration-300 ${
           menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -321,7 +322,7 @@ function StickyMobileCTA() {
   }, [])
   return (
     <div
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-white border-t border-[#E1E6F0] transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`}
+      className={`min-[1120px]:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-white border-t border-[#E1E6F0] transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`}
     >
       <PrimaryButton href="#apply" size="lg" block>
         Apply to Join BAN
@@ -456,7 +457,7 @@ function ThirdPath() {
   ]
 
   return (
-    <section className="py-20 md:py-28" style={{ background: ICE }}>
+    <section id="existing-paths" className="py-20 md:py-28" style={{ background: ICE }}>
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="mb-12 md:mb-14">
           <span
