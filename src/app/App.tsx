@@ -4,6 +4,11 @@ import heroPhoto from "@/imports/hero.jpg"
 import carelonLogo from "@/imports/carelon-logo.png"
 import acqLogo from "@/imports/acq-logo.png"
 
+// Public by nature — this ships in the bundle. Abuse is handled at the endpoint
+// (honeypot, server-side validation, reserved concurrency), not by hiding it.
+const FORM_ENDPOINT = "https://gkpuj7yc7xpfnwb2xj2ekxgrfm0jedhg.lambda-url.us-east-1.on.aws/"
+const CONTACT_EMAIL = "info@banpractice.com"
+
 const ROYAL_BLUE = "#1660D4"
 const BLUE_DEEP = "#1254BC"
 const BLUE_TINT = "#E8EFF9"
@@ -244,7 +249,7 @@ function Header() {
 
         <div className="hidden shrink-0 items-center gap-4 min-[1120px]:flex">
           <a
-            href="mailto:info@behavioranalystnetwork.com"
+            href={`mailto:${CONTACT_EMAIL}`}
             className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${navHover}`}
             style={{ color: navText }}
           >
@@ -320,7 +325,7 @@ function Header() {
             Apply to Join BAN
           </PrimaryButton>
           <a
-            href="mailto:info@behavioranalystnetwork.com"
+            href={`mailto:${CONTACT_EMAIL}`}
             className="pb-4 text-sm font-semibold text-center"
             style={{ color: MUTED }}
             onClick={() => setMenuOpen(false)}
@@ -1633,10 +1638,14 @@ function ApplicationForm() {
     interest: "",
     bcbaFinder: "",
     message: "",
+    website: "", // honeypot — see the hidden input below
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  // Kept out of `errors` deliberately: that object drives the "N fields need
+  // attention" counter, and a network failure is not a field problem.
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const required = [
     "firstName",
@@ -1719,9 +1728,22 @@ function ApplicationForm() {
       return
     }
     setSubmitting(true)
-    await new Promise((r) => setTimeout(r, 900))
-    setSubmitting(false)
-    setSubmitted(true)
+    setSubmitError(null)
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error(`submit failed: ${res.status}`)
+      setSubmitted(true)
+    } catch {
+      setSubmitError(
+        `Something went wrong sending your application. Please try again, or email us at ${CONTACT_EMAIL} and we'll pick it up from there.`,
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const fieldStyle = (field: string) => ({
@@ -1835,7 +1857,7 @@ function ApplicationForm() {
             <p className="text-[15px]" style={{ color: MUTED }}>
               Questions first?{" "}
               <a
-                href="mailto:info@behavioranalystnetwork.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="font-semibold hover:underline decoration-1 underline-offset-2"
                 style={{ color: ROYAL_BLUE }}
               >
@@ -1924,6 +1946,22 @@ function ApplicationForm() {
                   noValidate
                   className="px-6 md:px-8 py-8 flex flex-col gap-9"
                 >
+                  {/*
+                    Honeypot. Positioned off-screen rather than display:none —
+                    some bots skip hidden inputs but fill positioned ones. Kept
+                    out of the tab order and the accessibility tree.
+                  */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={form.website}
+                    onChange={(e) => handleChange("website", e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute w-px h-px -left-[9999px] overflow-hidden"
+                  />
+
                   {errorCount > 0 && (
                     <div
                       className="flex items-start gap-3 px-4 py-3.5 rounded-[10px]"
@@ -2074,6 +2112,30 @@ function ApplicationForm() {
                   </FormSection>
 
                   <div className="flex flex-col gap-3">
+                    {submitError && (
+                      <div
+                        className="flex items-start gap-3 px-4 py-3.5 rounded-[10px]"
+                        style={{ background: "#FEF4F4", border: "1px solid #F1AEAE" }}
+                        role="alert"
+                        aria-live="assertive"
+                      >
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          aria-hidden="true"
+                          className="mt-px flex-shrink-0"
+                        >
+                          <circle cx="8" cy="8" r="7" stroke="#DC2626" strokeWidth="1.5" />
+                          <path d="M8 4.75v4" stroke="#DC2626" strokeWidth="1.6" strokeLinecap="round" />
+                          <circle cx="8" cy="11.2" r="0.85" fill="#DC2626" />
+                        </svg>
+                        <p className="text-sm font-medium" style={{ color: "#991B1B" }}>
+                          {submitError}
+                        </p>
+                      </div>
+                    )}
                     <PrimaryButton
                       type="submit"
                       size="lg"
@@ -2129,7 +2191,7 @@ function ApplicationForm() {
 const FOOTER_LINKS = [
   { label: "Privacy Policy", href: "#" },
   { label: "Terms", href: "#" },
-  { label: "Contact", href: "mailto:info@behavioranalystnetwork.com" },
+  { label: "Contact", href: `mailto:${CONTACT_EMAIL}` },
 ]
 
 // Icons render only once a href is filled in, so no dead links ship.
