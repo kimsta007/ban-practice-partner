@@ -26,7 +26,9 @@ export function LegalPage({
   children: ReactNode
 }) {
   return (
-    <div style={{ background: ICE, minHeight: "100%" }}>
+    // Montserrat is imported globally in fonts.css but the landing page only
+    // opts in per-element, so it has to be declared here too.
+    <div style={{ background: ICE, minHeight: "100%", fontFamily: "Montserrat, sans-serif" }}>
       <header
         className="sticky top-0 z-10 px-6 md:px-10 py-4 flex items-center justify-between"
         style={{
